@@ -8,6 +8,8 @@ class Matrix
 {
 public:
 	static_assert(C == 0 || R <= SIZE_MAX / C, "Matrix capacity overflows size_t");
+	static constexpr int Rows = R;
+	static constexpr int Columns = C;
 	static constexpr size_t Capacity = R * C;
 	std::array<int, Capacity> Values;
 
