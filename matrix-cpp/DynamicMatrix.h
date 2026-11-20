@@ -11,10 +11,13 @@ class DynamicMatrix
 public:
 	__forceinline explicit DynamicMatrix(size_t rows, size_t columns)
 	{
-		//if (rows == 0 || columns <= SIZE_MAX / columns)
-		//{
-		//	throw std::runtime_error("Matrix capacity overflows size_t");
-		//}
+		if (rows > 0 && columns > SIZE_MAX / rows) 
+		{
+			char message[256];
+			snprintf(message, sizeof(message),
+				"%dx%d DynamicMatrix capacity overflows size_t", rows, columns);
+			throw std::runtime_error(message);
+		}
 		Rows = rows;
 		Columns = columns;
 		Capacity = rows * columns;
@@ -46,21 +49,21 @@ public:
 	constexpr const int& At(size_t row, size_t column) const
 	{
 		int index = row * Columns + column;
-		if (index > Capacity) std::out_of_range("out of range");
+		if (index > Capacity) throw std::out_of_range("out of range");
 		return Values[index];
 	}
 
 	constexpr int& operator[](size_t row, size_t column)
 	{
 		int index = row * Columns + column;
-		if (index > Capacity) std::out_of_range("out of range");
+		if (index > Capacity) throw std::out_of_range("out of range");
 		return Values[index];
 	}
 
 	constexpr const int& operator[](size_t row, size_t column) const
 	{
 		int index = row * Columns + column;
-		if (index > Capacity) std::out_of_range("out of range");
+		if (index > Capacity) throw std::out_of_range("out of range");
 		return Values[index];
 	}
 #pragma endregion
