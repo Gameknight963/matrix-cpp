@@ -3,12 +3,21 @@
 #include <array>
 #include <cstddef>
 #include <stdexcept>
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+#include <string>
 
 // Allocation-free runtime-sized matrix
 // Probably unsafe as hell but who cares
 class DynamicMatrix
 {
 public:
+	int Rows;
+	int Columns;
+	size_t Capacity;
+	int* Values;
+
 	__forceinline explicit DynamicMatrix(size_t rows, size_t columns)
 	{
 		if (rows > 0 && columns > SIZE_MAX / rows) 
@@ -33,10 +42,28 @@ public:
 		memcpy(this->Values, &original.Values, Capacity * sizeof(int));
 	}
 
-	int Rows;
-	int Columns;
-	size_t Capacity;
-	int* Values;
+	friend std::ostream& operator<<(std::ostream& os, const DynamicMatrix& m) {
+		int width = 1;
+		for (int i = 0; i < m.Rows * m.Columns; ++i) {
+			int len = static_cast<int>(std::to_string(m.Values[i]).length());
+			width = std::max(width, len);
+		}
+
+		for (int r = 0; r < m.Rows; ++r) {
+			os << "[";
+			for (int c = 0; c < m.Columns; ++c) {
+				int val = m.Values[r * m.Columns + c];
+				os << std::setw(width) << val;
+
+				if (c < m.Columns - 1) {
+					os << " ";
+				}
+			}
+			os << "]\n";
+		}
+		return os;
+	}
+
 
 #pragma region Indexing
 	constexpr int& At(size_t row, size_t column)
