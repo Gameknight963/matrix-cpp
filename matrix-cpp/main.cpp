@@ -14,4 +14,7 @@ int main()
 
     DynamicMatrix copy = dynamic;
     std::cout << copy;
+
+    DynamicMatrix* heap = new DynamicMatrix(2, 2);
+    std::cout << *heap;
 }

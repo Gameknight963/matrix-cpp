@@ -11,7 +11,7 @@
 #ifdef __clang__
 #define INLINE __attribute__((always_inline))
 #elif defined _MSC_VER
-#define INLINE_METHOD __forceinline
+#define INLINE __forceinline
 #elif defined __GNUC__
 #define INLINE __attribute__((always_inline))
 #endif
@@ -26,7 +26,7 @@ public:
 	size_t Capacity;
 	int* Values;
 
-	INLINE_METHOD explicit DynamicMatrix(size_t rows, size_t columns)
+	INLINE explicit DynamicMatrix(size_t rows, size_t columns)
 	{
 		if (rows > 0 && columns > SIZE_MAX / rows) 
 		{
@@ -45,7 +45,7 @@ public:
 		}
 	}
 
-	INLINE_METHOD DynamicMatrix(const DynamicMatrix& original)
+	INLINE DynamicMatrix(const DynamicMatrix& original)
 	{
 		this->Capacity = original.Capacity;
 		this->Rows = original.Rows;
