@@ -8,6 +8,14 @@
 #include <algorithm>
 #include <string>
 
+#ifdef __clang__
+#define INLINE __attribute__((always_inline))
+#elif defined _MSC_VER
+#define INLINE_METHOD __forceinline
+#elif defined __GNUC__
+#define INLINE __attribute__((always_inline))
+#endif
+
 // Allocation-free runtime-sized matrix
 // Probably unsafe as hell but who cares
 class DynamicMatrix
@@ -18,7 +26,7 @@ public:
 	size_t Capacity;
 	int* Values;
 
-	__forceinline explicit DynamicMatrix(size_t rows, size_t columns)
+	INLINE_METHOD explicit DynamicMatrix(size_t rows, size_t columns)
 	{
 		if (rows > 0 && columns > SIZE_MAX / rows) 
 		{
@@ -37,7 +45,7 @@ public:
 		}
 	}
 
-	__forceinline DynamicMatrix(const DynamicMatrix& original)
+	INLINE_METHOD DynamicMatrix(const DynamicMatrix& original)
 	{
 		this->Capacity = original.Capacity;
 		this->Rows = original.Rows;
@@ -157,3 +165,5 @@ public:
 		return this->Multiply(other);
 	}
 };
+
+#undef INLINE
