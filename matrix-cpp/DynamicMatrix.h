@@ -27,19 +27,23 @@ public:
 				"%dx%d DynamicMatrix capacity overflows size_t", rows, columns);
 			throw std::runtime_error(message);
 		}
-		Rows = rows;
-		Columns = columns;
-		Capacity = rows * columns;
-		Values = (int*)alloca(Capacity * sizeof(int));
+		this->Rows = rows;
+		this->Columns = columns;
+		this->Capacity = rows * columns;
+		this->Values = (int*)alloca(Capacity * sizeof(int));
 		for (int i = 0; i < Capacity; i++)
 		{
 			Values[i] = 0;
 		}
 	}
 
-	DynamicMatrix(const DynamicMatrix& original)
+	__forceinline DynamicMatrix(const DynamicMatrix& original)
 	{
-		memcpy(this->Values, &original.Values, Capacity * sizeof(int));
+		this->Capacity = original.Capacity;
+		this->Rows = original.Rows;
+		this->Columns = original.Columns;
+		this->Values = (int*)alloca(this->Capacity * sizeof(int));
+		memcpy(this->Values, original.Values, this->Capacity * sizeof(int));
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const DynamicMatrix& m) {

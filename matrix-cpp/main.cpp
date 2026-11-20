@@ -11,4 +11,7 @@ int main()
     DynamicMatrix dynamic(2, 2);
     dynamic.Set(0, 0, 1).Set(0, 1, 2).Set(1, 0, 3).Set(1, 1, 4);
     std::cout << dynamic;
+
+    DynamicMatrix copy = dynamic;
+    std::cout << copy;
 }
